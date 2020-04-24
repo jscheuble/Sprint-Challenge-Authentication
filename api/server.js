@@ -6,7 +6,15 @@ const authenticate = require("../auth/authenticate-middleware.js");
 const authRouter = require("../auth/auth-router.js");
 const jokesRouter = require("../jokes/jokes-router.js");
 
+const db = require("../auth/user-model");
+
 const server = express();
+
+server.get("/", (req, res) => {
+  db.get().then((users) => {
+    res.status(200).json(users);
+  });
+});
 
 server.use(helmet());
 server.use(cors());
