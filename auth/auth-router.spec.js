@@ -22,4 +22,28 @@ describe("auth router", () => {
       expect(res.body[0].username).toBe("duke");
     });
   });
+
+  describe("POST /login", () => {
+    it("should return a status of 200", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send({ username: "duke", password: "silver" });
+      let res = await request(server).post("/api/auth/login").send({
+        username: "duke",
+        password: "silver",
+      });
+      expect(res.status).toBe(200);
+    });
+
+    it("should return a welcome message and token", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send({ username: "duke", password: "silver" });
+      let res = await request(server).post("/api/auth/login").send({
+        username: "duke",
+        password: "silver",
+      });
+      expect(res.body.message && res.body.token);
+    });
+  });
 });
